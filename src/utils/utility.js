@@ -24,3 +24,10 @@ export const signupValidationSchema = yup.object().shape({
     .oneOf([yup.ref('password')], 'Passwords must match'),
   agree: yup.boolean().oneOf([true], 'You must agree to the Terms and service'),
 });
+export const otpSchema = yup.string().required('OTP is required').matches(/^\d{5}$/, 'OTP must be a 5-digit number')
+export const changePasswordValidationSchema = yup.object().shape({
+  old_password: yup.string().required('Old password is required'),
+  new_password: passwordSchema,
+  confirm_password: yup.string()
+    .oneOf([yup.ref('new_password')], 'Passwords must match'),
+});

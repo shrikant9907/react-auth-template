@@ -3,18 +3,39 @@ import ButtonStyled from './ButtonStyled';
 import TextFieldStyled from './TextFieldStyled';
 import FormHeadingStyled from './FormHeadingStyled';
 import GoBackLinkStyled from './GoBackLinkStyled';
+import { otpSchema } from '../../utils/utility';
 
 const VerifyOtpForm = ({ heading }) => {
 
-  const [isValid, setIsValid] = useState(true);
+  const [otpNumber, setOtpNumber] = useState("");
+  const [otpError, setOtpError] = useState("");
+
+  const validateOtp = async (value) => {
+    let errorMessage = "";
+    try {
+      await otpSchema.validate(value);
+    } catch (error) {
+      errorMessage = error.message
+    }
+    setOtpError(errorMessage);
+  };
+
+  const handleOnOtpChange = (e) => {
+    const { value } = e.target;
+    const trimmedValue = value.replace(/\D/g, "");
+    setOtpNumber(trimmedValue);
+    validateOtp(trimmedValue);
+  };
 
   const handleOnLoginSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Login submit");
+    console.log("Otp", otpNumber);
 
     return false;
   }
+
+  const isValidOtp = !otpError && otpNumber;
 
   return (
     <form
@@ -26,13 +47,22 @@ const VerifyOtpForm = ({ heading }) => {
       <TextFieldStyled
         fullWidth
         required
-        name="verify_otp"
+        name="otp"
         label="OTP"
-        placeholder="Enter OTP here"
-        error={false}
+        value={otpNumber}
+        onChange={handleOnOtpChange}
+        placeholder="Enter your 5 digit OTP here"
+        inputProps={{
+          maxLength: 5,
+        }}
+        error={!!otpError}
+        helperText={otpError}
       />
 
-      <ButtonStyled type="submit">
+      <ButtonStyled
+        type="submit"
+        disabled={!isValidOtp}
+      >
         Verify
       </ButtonStyled>
 

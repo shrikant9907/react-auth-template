@@ -49,7 +49,7 @@ const ForgotPasswordForm = ({ heading, hideLogo }) => {
     return false;
   }
 
-  const isValidEmail = !emailError;
+  const isValidEmail = !emailError && registeredEmail;
 
   return (
     <form

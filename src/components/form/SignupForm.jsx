@@ -39,6 +39,7 @@ const initSignupData = {
   email: "",
   password: "",
   confirm_password: "",
+  agree: false,
 }
 
 const initSignupError = {
@@ -46,6 +47,7 @@ const initSignupError = {
   email: "",
   password: "",
   confirm_password: "",
+  agree: "",
 }
 
 const SignupForm = ({ heading }) => {
@@ -57,6 +59,12 @@ const SignupForm = ({ heading }) => {
     try {
       await yup.reach(signupValidationSchema, name).validate(value);
       setSignupError((prev) => ({ ...prev, [name]: '' }));
+      if (name === 'password') {
+        setSignupFormData((prev) => ({
+          ...prev,
+          confirm_password: '',
+        }));
+      }
     } catch (error) {
       if (name === 'confirm_password' && value === signupFormData.password) {
         setSignupError((prev) => ({
@@ -123,7 +131,7 @@ const SignupForm = ({ heading }) => {
       />
       <PasswordFieldStyled
         fullWidth
-        requiredr
+        required
         name="password"
         label="Password"
         value={signupFormData.password}
