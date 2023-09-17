@@ -8,6 +8,7 @@ import TextFieldStyled from './TextFieldStyled';
 import FormHeadingStyled from './FormHeadingStyled';
 import * as yup from 'yup';
 import { signupValidationSchema } from '../../utils/utility';
+import { Link } from 'react-router-dom';
 
 const AgreeText = styled(Box)`
   padding: 0 0 20px 0;
@@ -20,7 +21,7 @@ const LoginText = styled(Box)`
   color: rgba(0,0,0,0.6);
 `;
 
-const LinkStyled = styled('a')`
+const LinkStyled = styled(Link)`
   text-decoration: none;
   color: rgba(0,0,0,0.8);
 `;
@@ -179,7 +180,7 @@ const SignupForm = ({ heading }) => {
 
       <LoginText>
         Already have an account?
-        <LinkSignupStyled href={"/login"}>
+        <LinkSignupStyled to={"/login"}>
           Login
         </LinkSignupStyled>
       </LoginText>

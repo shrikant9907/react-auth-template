@@ -14,7 +14,9 @@ export const passwordSchema = yup.string()
   );
 export const loginValidationSchema = yup.object().shape({
   email: emailSchema,
-  password: passwordSchema,
+  password: yup.string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters')
 });
 export const signupValidationSchema = yup.object().shape({
   full_name: yup.string().required('Full name is required'),
@@ -30,4 +32,25 @@ export const changePasswordValidationSchema = yup.object().shape({
   new_password: passwordSchema,
   confirm_password: yup.string()
     .oneOf([yup.ref('new_password')], 'Passwords must match'),
+});
+export const profileValidationSchema = yup.object().shape({
+  full_name: yup
+    .string()
+    .required('Full Name is required'),
+  email: emailSchema,
+  phone: yup
+    .string()
+    .notRequired(),
+  website: yup
+    .string()
+    .notRequired(),
+  gender: yup
+    .string()
+    .notRequired(),
+  dob: yup
+    .date()
+    .notRequired(),
+  about: yup
+    .string()
+    .notRequired(),
 });

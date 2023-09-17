@@ -8,6 +8,7 @@ import { AccountCircleOutlined } from '@mui/icons-material';
 import FormHeadingStyled from './FormHeadingStyled';
 import { loginValidationSchema } from '../../utils/utility';
 import * as yup from 'yup';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BrandLogo = styled(Box)`
   text-align: center;
@@ -31,7 +32,7 @@ const SignupText = styled(Box)`
   color: rgba(0,0,0,0.6);
 `;
 
-const LinkStyled = styled('a')`
+const LinkStyled = styled(Link)`
   text-decoration: none;
   font-size: 14px;
   color: rgba(0,0,0,0.8);
@@ -56,6 +57,8 @@ const LoginForm = ({ heading, hideLogo }) => {
   const [loginFormData, setLoginFormData] = useState(initLoginData);
   const [loginError, setLoginError] = useState(initLoginError);
 
+  const navigate = useNavigate();
+
   const validateField = async (name, value) => {
     try {
       await yup.reach(loginValidationSchema, name).validate(value);
@@ -67,7 +70,10 @@ const LoginForm = ({ heading, hideLogo }) => {
 
   const handleOnLoginSubmit = (e) => {
     e.preventDefault();
+
     console.log('Login form data', loginFormData);
+    navigate('/profile')
+
     return false;
   }
 
@@ -83,57 +89,59 @@ const LoginForm = ({ heading, hideLogo }) => {
     Object.values(loginFormData).every((value) => !!value)
 
   return (
-    <form
-      autoComplete='off'
-      onSubmit={handleOnLoginSubmit}
-    >
-      {heading && <FormHeadingStyled variant='h1'>{heading}</FormHeadingStyled>}
-      {!hideLogo &&
-        <BrandLogo>
-          <BrandLogoIcon />
-        </BrandLogo>
-      }
-      <EmailFieldStyled
-        fullWidth
-        required
-        name='email'
-        label="Email"
-        value={loginFormData.email}
-        onChange={handleOnFieldChange}
-        placeholder="Enter your email address"
-        error={!!loginError.email}
-        helperText={loginError.email}
-      />
-      <PasswordFieldStyled
-        fullWidth
-        required
-        name="password"
-        label="Password"
-        value={loginFormData.password}
-        onChange={handleOnFieldChange}
-        placeholder="Enter password"
-        error={!!loginError.password}
-        helperText={loginError.password}
-      />
-      <ForgotPasswordBox>
-        <LinkStyled href={"/forgot-password"}>
-          Forgot password?
-        </LinkStyled>
-      </ForgotPasswordBox>
-      <ButtonStyled
-        type="submit"
-        disabled={!isValidForm}
+    <>
+      <form
+        autoComplete='off'
+        onSubmit={handleOnLoginSubmit}
       >
-        Login
-      </ButtonStyled>
+        {heading && <FormHeadingStyled variant='h1'>{heading}</FormHeadingStyled>}
+        {!hideLogo &&
+          <BrandLogo>
+            <BrandLogoIcon />
+          </BrandLogo>
+        }
+        <EmailFieldStyled
+          fullWidth
+          required
+          name='email'
+          label="Email"
+          value={loginFormData.email}
+          onChange={handleOnFieldChange}
+          placeholder="Enter your email address"
+          error={!!loginError.email}
+          helperText={loginError.email}
+        />
+        <PasswordFieldStyled
+          fullWidth
+          required
+          name="password"
+          label="Password"
+          value={loginFormData.password}
+          onChange={handleOnFieldChange}
+          placeholder="Enter password"
+          error={!!loginError.password}
+          helperText={loginError.password}
+        />
+        <ForgotPasswordBox>
+          <LinkStyled to={"/forgot-password"}>
+            Forgot password?
+          </LinkStyled>
+        </ForgotPasswordBox>
+        <ButtonStyled
+          type="submit"
+          disabled={!isValidForm}
+        >
+          Login
+        </ButtonStyled>
 
-      <SignupText>
-        Don't have an account?
-        <LinkSignupStyled href={"/sign-up"}>
-          Sign Up
-        </LinkSignupStyled>
-      </SignupText>
-    </form>
+        <SignupText>
+          Don't have an account?
+          <LinkSignupStyled to={"/sign-up"}>
+            Sign Up
+          </LinkSignupStyled>
+        </SignupText>
+      </form>
+    </>
   )
 }
 
