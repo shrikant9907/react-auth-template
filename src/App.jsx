@@ -12,6 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" exact element={<LoginPage />} />
+        <Route path="/react-auth-template" exact element={<LoginPage />} />
         <Route path="/login" exact element={<LoginPage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
